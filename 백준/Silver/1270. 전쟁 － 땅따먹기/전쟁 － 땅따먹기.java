@@ -1,8 +1,5 @@
 import java.io.*;
-import java.util.Arrays;
-import java.util.Collections;
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Set;
@@ -21,38 +18,20 @@ public class Main {
 
                 StringTokenizer st = new StringTokenizer(br.readLine(), " ");
                 int Ti = Integer.parseInt(st.nextToken());
-                String winner = "";
+                String winner = "SYJKGW";
 
                 for (int i = 0; i < Ti; i++) {
                     String key = st.nextToken();
+                    int val = count.getOrDefault(key,0);
 
-                    if(count.containsKey(key)) {
-                        count.put(key, count.get(key) + 1);
-                    } else {
-                        count.put(key, 1);
+                    count.put(key, val+1);
+
+                    if(val+1 > Ti /2) {
+                        winner = key;
                     }
                 }
 
-                Set<Entry<String, Integer>> entrySet = count.entrySet();
-                for (Entry<String, Integer> e : entrySet) {
-                    if(Ti % 2 == 0) {
-                        if(e.getValue() > Ti / 2) {
-                            winner = e.getKey();
-                        }
-                    }
-                    else {
-                        if(e.getValue() >= (Ti / 2) +1) {
-                            winner = e.getKey();
-                        }
-                    }
-                }
-
-                if("".equals(winner)) {
-                    bw.write("SYJKGW" + "\n");
-                }
-                else {
-                    bw.write(winner + "\n");
-                }
+                bw.write(winner + "\n");
             }
 
             bw.flush();
