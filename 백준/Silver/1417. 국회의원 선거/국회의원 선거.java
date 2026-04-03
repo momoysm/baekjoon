@@ -3,55 +3,38 @@ import java.io.BufferedWriter;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
+import java.util.Collections;
+import java.util.PriorityQueue;
 
 public class Main {
-    
-    private static int N;
-    private static int[] arr;
-    private static int maxIdx;
 
     public static void main(String[] args) throws IOException {
         try(BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
             BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(System.out))) {
 
-            N = Integer.parseInt(br.readLine());
-            arr = new int[N];
+            int N = Integer.parseInt(br.readLine());
+            int dasom = Integer.parseInt(br.readLine());
 
-            maxIdx = -1;
-            int max = Integer.MIN_VALUE;
+            int count = 0;
 
-            for (int i = 0; i < N; i++) {
-                arr[i] = Integer.parseInt(br.readLine());
-
-                if(max <= arr[i]) {
-                    max = arr[i];
-                    maxIdx = i;
-                }
+            PriorityQueue<Integer> pq = new PriorityQueue<>(Collections.reverseOrder());
+            for (int i = 1; i < N; i++) {
+                pq.add(Integer.parseInt(br.readLine()));
             }
-            
-            int result = bribe();
 
-            bw.write(result + "");
+            while(!pq.isEmpty() && pq.peek() >= dasom) {
+                int max = pq.poll();
+
+                max--;
+                dasom++;
+
+                pq.add(max);
+                count++;
+            }
+
+            bw.write(count + "");
             bw.flush();
         }
-    }
-
-    private static int bribe() {
-        int count = 0;
-
-        while(maxIdx != 0) {
-            arr[maxIdx]--;
-            arr[0]++;
-            count++;
-
-            for (int i = 0; i < N; i++) {
-                if(arr[maxIdx] <= arr[i]) {
-                    maxIdx = i;
-                }
-            }
-        }
-
-        return count;
     }
 
 }
